@@ -1,9 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
-const port = 3001;
+const port = 6913;
 
 app.use(express.json());
+app.use(cors())
+
 
 let items = [];
 
@@ -24,8 +27,8 @@ app.post('/items', (req, res) => {
     });
 });
 
-app.delete('/items', (req, res) => {
-    items.splice(items.indexOf(req.body.item), 1);
+app.delete('/items/:index', (req, res) => {
+    items.splice(req.params.index, 1);
     res.json({
         items
     });

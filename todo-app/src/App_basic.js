@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
-let api = axios.create({
-  baseURL: 'http://localhost:6913'
-});
-
 export default class App extends Component {
   state = {
-    items: [],
+    items: ["Learn React Basics", "Explore redux", "Learn Nodejs"],
     newItem: ''
-  }
-
-  async componentDidMount() {
-    let res = await api.get('/items');
-    this.setState({
-      items: res.data.items
-    });
   }
 
   handleItemChange = (event) => {
@@ -26,22 +14,14 @@ export default class App extends Component {
     });
   }
 
-  addItem = async (event) => {
+  handleOnClick = (event) => {
     event.preventDefault();
 
-    let res = await api.post('/items', { item: this.state.newItem });
+    let items = this.state.items;
+    items.push(this.state.newItem);
 
     this.setState({
-      items: res.data.items,
-      newItem: ''
-    });
-  }
-
-  deleteItem = async (index) => {
-    let res = await api.delete(`/items/${index}`);
-
-    this.setState({
-      items: res.data.items
+      items
     });
   }
 
@@ -54,9 +34,9 @@ export default class App extends Component {
         </header>
 
         <div className="TodoContainer">
-          {this.state.items.map((item, index) => {
+          {this.state.items.map(item => {
             return (
-              <div className="TodoItem" key={item} onClick={() => this.deleteItem(index)}>
+              <div className="TodoItem">
                 <p>{item}</p>
               </div>
             )
@@ -64,7 +44,7 @@ export default class App extends Component {
 
           <form>
             <input type="text" placeholder="New Item" onChange={this.handleItemChange} value={this.state.newItem} />
-            <button onClick={this.addItem}>Add</button>
+            <button onClick={this.handleOnClick}>Add</button>
           </form>
         </div>
       </div>
